@@ -13,5 +13,13 @@ Following are the possible solutions
 
 
 ### Issue #2
-System.Management.Automation.ParentContainsErrorRecordException: *** Could not deploy package.
+* System.Management.Automation.ParentContainsErrorRecordException: *** Could not deploy package.
+* Unable to connect to the SQL server. 
 
+#### Suggestion
+Please check below questions
+* Is SQL server name provided as FQDN?
+* Is firewall port opened in your SQL server?
+* Is username and password provided correctly?
+* Is there any proxy server in your network?
+* Are you able to connect to your SQL server using SSMS?
