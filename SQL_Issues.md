@@ -1,7 +1,6 @@
 ## SQL Issues
 
-### Issue #1
-System.Management.Automation.ParentContainsErrorRecordException: *** Deployment cannot continueAn error occurred during deployment plan generation. 
+### Issue - Deployment cannot continueAn error occurred during deployment plan generation. 
 
 #### Cause
 Mismatch in target planform of target server and target platform being specified in dacpac file. 
@@ -11,8 +10,7 @@ Following are the possible solutions
 * Change target platform of dacpac file as same as platform of target server. 
 * Pass additional argument in task `/p:AllowIncompatiblePlatform=true`
 
-
-### Issue #2
+### Issue #2 - Unable to connect to the SQL server
 * System.Management.Automation.ParentContainsErrorRecordException: *** Could not deploy package.
 * Unable to connect to the SQL server. 
 
@@ -23,3 +21,31 @@ Please check below questions
 * Is username and password provided correctly?
 * Is there any proxy server in your network?
 * Are you able to connect to your SQL server using SSMS?
+
+### Issue #3 - Azure SQL DACPAC timeout
+
+Try below mentioned ways of resolving this issue
+##### Increase timeout
+* For SQLPackage.exe, Command and Target timeout can be increased by passing additional arguments as
+`/p:CommandTimeout=1800 /TargetTimeout: 1800`
+
+* For Invoke-SqlCmd, Connection and Query timeout can be increase by passing additional arguments as 
+`-ConnectionTimeout=1200 -QueryTimeout=1200`
+
+##### Set LongRunningQueryTimeoutSeconds in registry
+* Run PowerShell with administrator permission and execute below mentioned command
+`C:\Windows\System32\reg.exe add HKCU\Software\Microsoft\VisualStudio\10.0\SQLDB\Database /v LongRunningQueryTimeoutSeconds /t REG_DWORD /d 0 /f`
+
+##### Collect diagnostic logs 
+If issue didn't get solved with steps mentioned above, collect diagnostics logs and share with the team. 
+
+To colelct diagnostics logs provide below argument in additional arguments of task
+`/df :<logfilepath>`
+
+###### How to get diagnostic logs on hosted agent
+
+Add argument for generating diagnostic logs in additional argument input of Azure SQL dacpac task
+`/df:'D:\sqlpackage.log'`
+
+Add PowerShell task next Azure SQL Dacpac task, select inline script as the option and copy below script
+`Get-Content 'D:\sqlpackage.log'`
