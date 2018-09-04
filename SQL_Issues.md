@@ -1,4 +1,13 @@
-## SQL Issues
+## SQL Info and Issues
+
+## SQL Documentations
+* [SQLPackage - Actions and arguments](https://docs.microsoft.com/en-us/sql/tools/sqlpackage?view=sql-server-2017)
+* [Azure SQL database deployment - Supported Actions](https://docs.microsoft.com/en-us/vsts/pipelines/targets/azure-sqldb?branch=master&view=vsts&tabs=yaml)
+* [SQLCMD arguments](https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility?view=sql-server-2017)
+* [Invoke-SQLCMD arguments](https://docs.microsoft.com/en-us/powershell/module/sqlps/invoke-sqlcmd?view=sqlserver-ps)
+* [Compare Invoke-SQLCMD and SQLCMD arguments](https://docs.microsoft.com/en-us/sql/database-engine/invoke-sqlcmd-cmdlet?view=sql-server-2014#comparing-invoke-sqlcmd-and-the-sqlcmd-utility)
+
+## Issues
 
 ### Issue - Deployment cannot continueAn error occurred during deployment plan generation. 
 
