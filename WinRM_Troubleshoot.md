@@ -39,3 +39,18 @@ winrm get winrm/config
 Also, using above mentioned command you can identify port on which WinRM service is running. 
 * Port 5985  - HTTP
 * Port 5986  - HTTPS
+
+#### Enable remoting from PowerShell (PS cmdlet for configuring WinRM) 
+Run PowerShell as Administrator
+```
+Enable-PSRemoting
+```
+
+#### PowerShell script to verify PS session/WinRM connection
+```
+$soptions = New-PSSessionOption -SkipCACheck
+$cred = Get-Credential
+$computername = <EnterComputerName>
+$computerport = <EnterPort>
+Enter-PSSession -ComputerName $computername -Port $computerport -Credential $cred -SessionOption $soptions -UseSSL # Remove -UseSSL if port is 5985
+```
