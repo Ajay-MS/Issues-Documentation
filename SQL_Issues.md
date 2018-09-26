@@ -7,6 +7,34 @@
 * [Invoke-SQLCMD arguments](https://docs.microsoft.com/en-us/powershell/module/sqlps/invoke-sqlcmd?view=sqlserver-ps)
 * [Compare Invoke-SQLCMD and SQLCMD arguments](https://docs.microsoft.com/en-us/sql/database-engine/invoke-sqlcmd-cmdlet?view=sql-server-2014#comparing-invoke-sqlcmd-and-the-sqlcmd-utility)
 
+#### Powershell Script to connnect to Azure SQL with SPN
+```
+$TenantId = "<Tenant Id>"
+$SPNName = "<Enter application display name>"
+$SPNPassword = "<Enter SPN Key>"
+$SQLServerName = "<SQL Server name>"
+
+$ServicePrincipalId = $(Get-AzureRmADServicePrincipal -DisplayName "$SPNName").ApplicationId
+$SecureStringPassword = ConvertTo-SecureString -String $SPNKey -AsPlainText -Force
+
+Get-AADToken -TenantID $TenantId -ServicePrincipalId $ServicePrincipalId -ServicePrincipalPwd $SecureStringPassword -OutVariable SPNToken
+
+Write-Verbose "Create SQL connectionstring"
+$conn = New-Object System.Data.SqlClient.SQLConnection 
+$DatabaseName = 'Master'
+$conn.ConnectionString = "Data Source=$SQLServerName.database.windows.net;Initial Catalog=$DatabaseName;Connect Timeout=30"
+$conn.AccessToken = $($SPNToken)
+$conn
+
+Write-Verbose "Connect to database and execute SQL script"
+$conn.Open() 
+$query = 'select @@version'
+$command = New-Object -TypeName System.Data.SqlClient.SqlCommand($query, $conn) 	
+$Result = $command.ExecuteScalar()
+$Result
+$conn.Close() 
+```
+
 ## Issues
 
 ### Issue - Deployment cannot continueAn error occurred during deployment plan generation. 
